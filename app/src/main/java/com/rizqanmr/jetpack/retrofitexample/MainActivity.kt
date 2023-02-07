@@ -3,10 +3,12 @@ package com.rizqanmr.jetpack.retrofitexample
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
 import com.rizqanmr.jetpack.retrofitexample.data.entity.AlbumEntity
+import com.rizqanmr.jetpack.retrofitexample.data.entity.AlbumItem
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
 
@@ -16,6 +18,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val retService = RetrofitInstance.getRetrofitInstance()
             .create(ApiService::class.java)
+
+        //path parameter example
+//        val pathResponse : LiveData<Response<AlbumItem>> = liveData {
+//            val response = retService.getAlbum(3)
+//            emit(response)
+//        }
+//        pathResponse.observe(this, Observer {
+//            val title = it.body()?.title
+//            Toast.makeText(applicationContext, title, Toast.LENGTH_LONG).show()
+//        })
+
         val responseLiveData: LiveData<Response<AlbumEntity>> = liveData {
             val response = retService.getAlbums()
             emit(response)
