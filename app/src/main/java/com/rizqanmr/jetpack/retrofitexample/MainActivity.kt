@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
             .create(ApiService::class.java)
         getRequestWithQueryParameters()
         //getRequestWithPathParameters()
+        //uploadAlbum()
 
     }
 
@@ -51,6 +52,21 @@ class MainActivity : AppCompatActivity() {
         pathResponse.observe(this, Observer {
             val title = it.body()?.title
             Toast.makeText(applicationContext, title, Toast.LENGTH_LONG).show()
+        })
+    }
+
+    private fun uploadAlbum() {
+        val album = AlbumItem(0, "My Title", 3)
+        val postResponse: LiveData<Response<AlbumItem>> = liveData {
+            val response = retService.uploadAlbum(album)
+            emit(response)
+        }
+        postResponse.observe(this, Observer {
+            val receivedAlbumsItem = it.body()
+            val result = " "+"Album Title : ${receivedAlbumsItem?.title}"+"\n"+
+                    " "+"Album id : ${receivedAlbumsItem?.id}"+"\n"+
+                    " "+"User id : ${receivedAlbumsItem?.userId}"+"\n\n\n"
+            text_view.text = result
         })
     }
 }
